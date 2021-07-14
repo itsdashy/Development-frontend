@@ -60,7 +60,7 @@ function Developments(props) {
                 </CardBody>
                 <div className="card-footer">
                   <Button outline color="primary">
-                    + Add To Cart
+                    Add To Favorites
                   </Button>
 
                   <style jsx>
