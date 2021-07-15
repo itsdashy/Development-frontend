@@ -30,9 +30,7 @@ const QUERY = gql`
 		region{
 		  name
 		}
-		county {
-		  name
-		}
+		county
 	  }
   }
 `;
@@ -64,7 +62,7 @@ function DevelopmentList(props) {
 					}}></div></a></Link>
 					<CardBody>
 						<CardTitle>{res.name}</CardTitle>
-						<CardText>{res.city}, {res.county.name}</CardText>
+						<CardText>{res.city}, {res.county}</CardText>
 						<CardText>{truncate(res.description, 120, '...')}</CardText>
 						<DevelopmentFromPrices developmentId={res.id} />
 					</CardBody>
