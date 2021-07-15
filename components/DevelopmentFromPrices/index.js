@@ -36,7 +36,10 @@ function renderFromPrices(plots){
 		}
 		lastBeds = plot.property.bedrooms;
 	});
-	return ShowHtml(output.join("<br />"));
+	if(output.length > 0) {
+		return ShowHtml(output.join("<br />"));
+	}
+	return "";
 }
 
 function DevelopmentFromPrices(props) {

@@ -1,13 +1,13 @@
 /* /pages/developments.js */
 import { useRouter } from "next/router";
 
-import DevelopmentInfo from "../components/DevelopmentInfo";
+import Development from "../components/Development";
 function Developments(props) {
   const router = useRouter();
   
 	return (
 	  <>
-		<DevelopmentInfo developmentId={router.query.id} />
+		<Development developmentId={router.query.id} />
 	  </>
 	);
   return "";

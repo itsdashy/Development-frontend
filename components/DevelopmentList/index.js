@@ -23,8 +23,9 @@ const QUERY = gql`
 		id
 		name
 		city
+		shortdescription
 		description
-		image {
+		images {
 		  url
 		}
 		region{
@@ -35,7 +36,8 @@ const QUERY = gql`
   }
 `;
 
-const truncate = (str, max, suffix) => str.length < max ? str : `${str.substr(0, str.substr(0, max - suffix.length).lastIndexOf(' '))}${suffix}`;
+// const truncate = (str, max, suffix) => str.length < max ? str : `${str.substr(0, str.substr(0, max - suffix.length).lastIndexOf(' '))}${suffix}`;
+// truncate(res.description, 120, '...')
 
 function DevelopmentList(props) {
   const { loading, error, data } = useQuery(QUERY);
@@ -54,16 +56,18 @@ function DevelopmentList(props) {
           {searchQuery.map((res) => (
 			<Col xs="12" sm="12" md="6" lg="4" style={{ padding: 0 }} key={res.id}>
 				<Card style={{ margin: "0 0.5rem 20px 0.5rem" }}>
-					<Link
+					{Object.keys(res.images).map(function(object, i){
+					   return i == 0 ? (<Link key={i}
 					as={`/developments/${res.id}`}
 					href={`/developments?id=${res.id}`}
-					><a><div className="card-image" style={{ 
-						backgroundImage: `url(${process.env.NEXT_PUBLIC_API_URL}${res.image.url})` 
-					}}></div></a></Link>
+					><a key={i}><div key={i} className="card-image" style={{ 
+						backgroundImage: `url(${process.env.NEXT_PUBLIC_API_URL}${res.images[object].url})` 
+					}}></div></a></Link>) : null; 
+					})}
 					<CardBody>
 						<CardTitle>{res.name}</CardTitle>
 						<CardText>{res.city}, {res.county}</CardText>
-						<CardText>{truncate(res.description, 120, '...')}</CardText>
+						<CardText>{res.shortdescription}</CardText>
 						<DevelopmentFromPrices developmentId={res.id} />
 					</CardBody>
 					<div className="card-footer">
