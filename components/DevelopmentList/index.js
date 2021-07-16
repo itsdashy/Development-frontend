@@ -2,6 +2,7 @@
 /* components/DevelopmentList/index.js */
 import { useQuery } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
+import Helpers from "../../components/Helpers.js"
 
 import Link from "next/link";
 
@@ -36,9 +37,6 @@ const QUERY = gql`
   }
 `;
 
-// const truncate = (str, max, suffix) => str.length < max ? str : `${str.substr(0, str.substr(0, max - suffix.length).lastIndexOf(' '))}${suffix}`;
-// truncate(res.description, 120, '...')
-
 function DevelopmentList(props) {
   const { loading, error, data } = useQuery(QUERY);
   if (error) return "Error loading developments";
@@ -67,7 +65,7 @@ function DevelopmentList(props) {
 					<CardBody>
 						<CardTitle>{res.name}</CardTitle>
 						<CardText>{res.city}, {res.county}</CardText>
-						<CardText>{res.shortdescription}</CardText>
+						{Helpers.ShowAsParagraphs(res.shortdescription)}
 						<DevelopmentFromPrices developmentId={res.id} />
 					</CardBody>
 					<div className="card-footer">

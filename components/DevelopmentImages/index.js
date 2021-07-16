@@ -51,6 +51,9 @@ function DevelopmentOpeningHours(props) {
       <>
 		  <style>
 			{`
+				.carousel {
+					margin-bottom: 1rem;
+				}
 				.carousel-item > img { 
 					width: 100%;
 				}

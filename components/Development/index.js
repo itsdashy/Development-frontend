@@ -1,11 +1,14 @@
 /* components/Development/index.js */
 import { useQuery } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
+import Helpers from "../../components/Helpers.js"
 
 import DevelopmentFromPrices from "../../components/DevelopmentFromPrices";
 import DevelopmentOpeningHours from "../../components/DevelopmentOpeningHours";
 import DevelopmentImages from "../../components/DevelopmentImages";
 import DevelopmentProperties from "../../components/DevelopmentProperties";
+
+import Link from "next/link";
 
 import {
   Button,
@@ -16,6 +19,9 @@ import {
   CardTitle,
   Col,
   Row,
+  ListGroup,
+  ListGroupItem,
+  Media,
 } from "reactstrap";
 
 const QUERY = gql`
@@ -24,6 +30,7 @@ const QUERY = gql`
 		id
 		name
 		description
+		shortdescription
 		addressline1
 		addressline2
 		city
@@ -36,9 +43,13 @@ const QUERY = gql`
 			id
 			name
 			description
+			shortdescription
 			image {
 			  url
 			}
+		}
+		specifications {
+			specification
 		}
 		telephone
 		mondayopening
@@ -103,8 +114,35 @@ function Development(props) {
 			h1, h2 {
 				margin-top: 30px;
 			}
-		`}
-      </style>
+			.isDisabled {
+				pointer-events: none;
+			}
+			  a {
+				  text-decoration: underline;
+			  }
+			  .container-fluid {
+				margin-bottom: 30px;
+			  }
+			  .btn-outline-primary {
+				color: #007bff !important;
+			  }
+			  .btn-primary {
+				  color: white !important;
+			  }
+			  .btn-plan {
+				  margin: 0 0 1rem 1rem;
+				  width: 140px;
+				  float: left;
+				  clear: left;
+				  
+			  }
+			  .img-plan {
+				  margin-bottom: 1rem;
+				  background-color: #DDDDDD;
+				  padding: 120px 50px !important;
+			  }
+			`}
+		  </style>
         <h1>{development.name}</h1>
         <CardText>{showFullAddress(development)}</CardText>
 		<DevelopmentFromPrices developmentId={development.id} />
@@ -115,32 +153,21 @@ function Development(props) {
 		
 		<h2>Overview</h2>
 		<DevelopmentImages development={development} />
-        <CardText>{development.description}</CardText>
-		
+		{Helpers.ShowAsParagraphs(development.description)}
+		{Helpers.ShowAsList(development.specifications, "specification", {fontSize: "125%"})}
+		<Link href="#"><a>View brochure</a></Link>
 		
 		<h2>Properties</h2>
+		<Media>
+			<Media left href="#">
+				<Media object alt="Plan image" className="img-plan" />
+			</Media>
+			<Media right body>
+				<a className="btn btn-primary btn-plan">Expand plan</a>
+				<a className="btn btn-primary btn-plan">Download plan</a>
+			</Media>
+		</Media>
 		<DevelopmentProperties development={development} />
-		
-		  <style jsx>
-			{`
-			  a {
-				color: white;
-			  }
-			  a:link {
-				text-decoration: none;
-				color: white;
-			  }
-			  .container-fluid {
-				margin-bottom: 30px;
-			  }
-			  .btn-outline-primary {
-				color: #007bff !important;
-			  }
-			  a:hover {
-				color: white !important;
-			  }
-			`}
-		  </style>
       </>
     );
   }

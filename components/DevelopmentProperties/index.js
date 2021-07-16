@@ -1,5 +1,8 @@
 /* components/DevelopmentProperties/index.js */
 
+import Helpers from "../../components/Helpers.js"
+import PropertyAvailability from "../../components/PropertyAvailability";
+
 import {
   Card,
   CardBody,
@@ -18,13 +21,14 @@ function DevelopmentProperties(props) {
         <Row>
           {development.properties.map((res) => (
             <Col xs="12" sm="12" md="6" lg="4" style={{ padding: 0 }} key={res.id}>
-              <Card style={{ margin: "0 10px" }}>
+              <Card style={{ margin: "0 0.5rem 20px 0.5rem" }}>
                 <div className="card-image" style={{ 
 						backgroundImage: `url(${process.env.NEXT_PUBLIC_API_URL}${res.image.url})` 
 					}}></div>
                 <CardBody>
-                  <CardTitle>{res.name}</CardTitle>
-                  <CardText>{res.description}</CardText>
+                  <h3>{res.name}</h3>
+                  {Helpers.ShowAsParagraphs(res.shortdescription)}
+				  <PropertyAvailability developmentId={development.id} propertyId={res.id} />
                 </CardBody>
               </Card>
             </Col>
@@ -33,6 +37,10 @@ function DevelopmentProperties(props) {
 		
 		  <style jsx>
 			{`
+			  h3 {
+				  font-size: 1.4em;
+				  margin-bottom: 1rem;
+			  }
 			  .card-image {
 				height: 265px;
 				background-repeat: no-repeat;

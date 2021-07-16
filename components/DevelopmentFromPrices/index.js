@@ -1,6 +1,7 @@
 /* components/DevelopmentFromPrices/index.js */
 import { useQuery } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
+import Helpers from "../../components/Helpers.js"
 
 import {
   CardText,
@@ -19,25 +20,17 @@ const QUERY = gql`
   }
 `;
 
-const numberWithCommas = (str) => str.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
-function ShowHtml(str) {
-	return (
-	 <CardText className="card-text" dangerouslySetInnerHTML={{__html: str}} />
-	)
-}
-
 function renderFromPrices(plots){
 	let output = [];
 	let lastBeds = "";
 	plots.forEach((plot) => {
 		if(lastBeds != plot.property.bedrooms){
-			output.push("<b>"+plot.property.bedrooms+"</b> beds from <b>&pound;"+numberWithCommas(plot.price)+"</b>");
+			output.push("<b>" + plot.property.bedrooms + "</b> beds from <b>&pound;" + Helpers.NumberWithCommas(plot.price) + "</b>");
 		}
 		lastBeds = plot.property.bedrooms;
 	});
 	if(output.length > 0) {
-		return ShowHtml(output.join("<br />"));
+		return output.join("<br />");
 	}
 	return "";
 }
@@ -54,7 +47,7 @@ function DevelopmentFromPrices(props) {
 	
     return (
       <>
-          {renderFromPrices(plots)}
+          {Helpers.ShowAsParagraphs(renderFromPrices(plots))}
       </>
     );
   }
