@@ -31,7 +31,7 @@ function AbbrevWeekday(str) {
 
 function ShowHtml(str) {
 	return (
-	 <CardText style={{margin:0, lineHeight:"120%"}} dangerouslySetInnerHTML={{__html: str}} />
+	 <CardText style={{margin:0, lineHeight:"140%"}} dangerouslySetInnerHTML={{__html: str}} />
 	)
 }
 
