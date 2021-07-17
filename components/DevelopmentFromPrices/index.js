@@ -20,21 +20,6 @@ const QUERY = gql`
   }
 `;
 
-function renderFromPrices(plots){
-	let output = [];
-	let lastBeds = "";
-	plots.forEach((plot) => {
-		if(lastBeds != plot.property.bedrooms){
-			output.push("<b>" + plot.property.bedrooms + "</b> beds from <b>&pound;" + Helpers.NumberWithCommas(plot.price) + "</b>");
-		}
-		lastBeds = plot.property.bedrooms;
-	});
-	if(output.length > 0) {
-		return output.join("<br />");
-	}
-	return "";
-}
-
 function DevelopmentFromPrices(props) {
   const { loading, error, data } = useQuery(QUERY, {
     variables: { id: props.developmentId },
@@ -45,11 +30,21 @@ function DevelopmentFromPrices(props) {
   if (data.plots && data.plots.length) {
     const { plots } = data;
 	
-    return (
-      <>
-          {Helpers.ShowAsParagraphs(renderFromPrices(plots))}
-      </>
-    );
+	let output = [];
+	let lastBeds = "";
+	Object.keys(plots).map(function(object, i){
+		if(lastBeds != plots[object].property.bedrooms){
+			output.push(<CardText key={i} style={{marginBottom: 0}}><b>{plots[object].property.bedrooms}</b> beds from <b>{Helpers.PriceLarge(plots[object].price)}</b></CardText>);
+		}
+		lastBeds = plots[object].property.bedrooms;
+	});
+	
+	return (
+	  <>
+		{output}
+	  </>
+	);
+	
   }
   return "";
 }

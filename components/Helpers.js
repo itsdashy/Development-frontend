@@ -16,18 +16,10 @@ const Helpers = {
 				}
 				if(strrows.length > 0) {
 					str = strrows;
-					return (
-			  <>
-				{strrows}
-			  </>
-					);
+					return strrows;
 				}
 			}
-			return (
-			  <>
-				<CardText dangerouslySetInnerHTML={{__html:str}} className={classname} style={style} />
-			  </>
-			);
+			return (<CardText dangerouslySetInnerHTML={{__html:str}} className={classname} style={style} />);
 		}
 		catch(err) {}
 		return (<></>);
@@ -42,7 +34,7 @@ const Helpers = {
 				  <List className={classname} style={style}>
 					{Object.keys(list).map(function(object, i){
 						return count > 0 ? (
-						<li key={i}>{list[i][listitem]}</li>) : null; 
+						<li dangerouslySetInnerHTML={{__html:list[i][listitem]}} key={i} />) : null; 
 					})}
 				  </List>
 				  </>
@@ -52,9 +44,9 @@ const Helpers = {
 		catch(err) {}
 		return (<></>);
     },
-    NumberWithCommas: function(str){
+    PriceLarge: function(str){
 		try{
-			return(str.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+			return (<>&pound;{str.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</>);
 		}
 		catch(err) {}
 		return (<></>);

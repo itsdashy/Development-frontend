@@ -1,5 +1,4 @@
 /* components/DevelopmentOpeningHours/index.js */
-import Helpers from "../../components/Helpers.js"
 
 import {
   CardText,
@@ -82,7 +81,7 @@ function DevelopmentOpeningHours(props) {
 		
     return (
       <>
-		{Helpers.ShowAsParagraphs(openinghourstext, {margin:0, lineHeight:"140%"})}
+		<CardText style={{margin:0, lineHeight:"140%"}}>{openinghourstext != "" ? openinghourstext : null}</CardText>
       </>
     );
 }

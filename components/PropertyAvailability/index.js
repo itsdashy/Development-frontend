@@ -18,22 +18,6 @@ const QUERY = gql`
   }
 `;
 
-function renderFromPrices(plots){
-	try{
-		let availability = Object.keys(plots).length, minprice = "";
-		Object.keys(plots).map(function(object, i){
-			if(i == 0) {
-				minprice = plots[object].price;
-			}
-		});
-		if(minprice != "") {
-			return "<b>" + availability + "</b> available from <b>&pound;" + Helpers.NumberWithCommas(minprice) + "</b>";
-		}
-	}
-	catch(err) {}
-	return "";
-}
-
 function PropertyAvailability(props) {
   const { loading, error, data } = useQuery(QUERY, {
     variables: {
@@ -49,7 +33,9 @@ function PropertyAvailability(props) {
 	
     return (
       <>
-          {Helpers.ShowAsParagraphs(renderFromPrices(plots))}
+		{Object.keys(plots).map(function(object, i){
+			return i == 0 ? (<CardText key={i}><b>{Object.keys(plots).length}</b> available from <b>{Helpers.PriceLarge(plots[object].price)}</b></CardText>) : null;
+		})}
       </>
     );
   }

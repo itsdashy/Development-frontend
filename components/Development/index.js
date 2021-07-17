@@ -146,10 +146,10 @@ function Development(props) {
         <h1>{development.name}</h1>
         <CardText>{showFullAddress(development)}</CardText>
 		<DevelopmentFromPrices developmentId={development.id} />
-		<CardText className="text-uppercase" style={{margin:0, lineHeight:"120%"}}><b>Sales Office &amp; Show Home</b></CardText>
+		<CardText className="text-uppercase" style={{margin:"1rem 0 0 0 ", lineHeight:"120%"}}><b>Sales Office &amp; Show Home</b></CardText>
 		<DevelopmentOpeningHours development={development} />
 		<CardText style={{margin:0, lineHeight:"140%"}}><b>{development.telephone}</b></CardText>
-        <Button outline color="primary" style={{marginTop:"1rem"}}>Enquire</Button>
+		<a className="btn btn-primary" style={{marginTop:"1rem"}}>Enquire</a>
 		
 		<h2>Overview</h2>
 		<DevelopmentImages development={development} />
