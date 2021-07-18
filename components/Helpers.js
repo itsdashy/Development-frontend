@@ -24,17 +24,28 @@ const Helpers = {
 		catch(err) {}
 		return (<></>);
     },
-    ShowAsList: function(list, listitem, style = {}, classname = ""){
+    ShowAsList: function(list, listitem = "", style = {}, classname = ""){
 		try{
 			let strrows = [];
 			let count = Object.keys(list).length;
-			if(count > 0){
+			if(count > 0 && listitem != ""){
 				return (
 				  <>
 				  <List className={classname} style={style}>
 					{Object.keys(list).map(function(object, i){
 						return count > 0 ? (
 						<li dangerouslySetInnerHTML={{__html:list[i][listitem]}} key={i} />) : null; 
+					})}
+				  </List>
+				  </>
+				);
+			} else if(count > 0 && listitem == ""){
+				return (
+				  <>
+				  <List className={classname} style={style}>
+					{Object.keys(list).map(function(object, i){
+						return count > 0 ? (
+						<li dangerouslySetInnerHTML={{__html:list[i]}} key={i} />) : null; 
 					})}
 				  </List>
 				  </>

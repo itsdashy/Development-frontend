@@ -47,6 +47,9 @@ const QUERY = gql`
 			image {
 			  url
 			}
+			specifications {
+			  specification
+			}
 		}
 		specifications {
 			specification

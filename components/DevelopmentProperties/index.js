@@ -4,6 +4,8 @@ import Helpers from "../../components/Helpers.js"
 import PropertyAvailability from "../../components/PropertyAvailability";
 import PropertyFeaturesFooter from "../../components/PropertyFeaturesFooter";
 
+import Link from "next/link";
+
 import {
   Card,
   CardBody,
@@ -16,6 +18,17 @@ import {
 
 function DevelopmentProperties(props) {
 	const development = props.development;
+	
+	let list = [];
+	if(Object.keys(development.properties).length > 0) {
+		Object.keys(development.properties).map(function(propertykey, i){
+			if(Object.keys(development.properties[propertykey].specifications).length) {
+				Object.keys(development.properties[propertykey].specifications).map(function(speckey, ii){
+					list.push(development.properties[propertykey].specifications[speckey]);
+				});
+			}
+		});
+	}
 		
     return (
       <>
@@ -51,6 +64,11 @@ function DevelopmentProperties(props) {
             </Col>
           ))}
         </Row>
+		{Helpers.ShowAsList(list, "specification", {fontSize: "125%"})}
+		{(Object.keys(list).length > 0) ? (
+			<Link href="#"><a>More property specs</a></Link>
+			) : null
+		}
       </>
     );
 }
