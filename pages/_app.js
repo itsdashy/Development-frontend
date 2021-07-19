@@ -7,6 +7,7 @@ import fetch from "isomorphic-fetch";
 import Layout from "../components/Layout";
 import AppContext from "../context/AppContext";
 import withData from "../lib/apollo";
+import "./App.css";
 
 class MyApp extends App {
   state = {

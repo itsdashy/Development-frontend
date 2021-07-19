@@ -81,7 +81,7 @@ function DevelopmentOpeningHours(props) {
 		
     return (
       <>
-		<CardText style={{margin:0, lineHeight:"140%"}}>{openinghourstext != "" ? openinghourstext : null}</CardText>
+		<CardText className="line-no-margin">{openinghourstext != "" ? openinghourstext : null}</CardText>
       </>
     );
 }

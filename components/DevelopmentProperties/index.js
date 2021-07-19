@@ -1,10 +1,8 @@
 /* components/DevelopmentProperties/index.js */
-
 import Helpers from "../../components/Helpers.js"
+
 import PropertyAvailability from "../../components/PropertyAvailability";
 import PropertyFeaturesFooter from "../../components/PropertyFeaturesFooter";
-
-import Link from "next/link";
 
 import {
   Card,
@@ -14,6 +12,7 @@ import {
   CardTitle,
   Col,
   Row,
+  NavLink,
 } from "reactstrap";
 
 function DevelopmentProperties(props) {
@@ -32,30 +31,31 @@ function DevelopmentProperties(props) {
 		
     return (
       <>
-		  <style jsx>
-			{`
-			  h3 {
-				  font-size: 1.4em;
-				  margin-bottom: 1rem;
-			  }
-			  .card-image {
-				height: 265px;
-				background-repeat: no-repeat;
-				background-position: center center;
-				background-size: cover;
-			  }
-			`}
-		  </style>
-		  
-        <Row>
+        <Row className="card-row">
           {development.properties.map((res) => (
-            <Col xs="12" sm="12" md="6" lg="4" style={{ padding: 0 }} key={res.id}>
-              <Card style={{ margin: "0 0.5rem 20px 0.5rem" }}>
-                <div className="card-image" style={{ 
+            <Col xs="12" sm="12" md="6" lg="4" key={res.id} className="column">
+              <Card>
+                <div className="card-image" style={{
+						height: 265,
 						backgroundImage: `url(${process.env.NEXT_PUBLIC_API_URL}${res.image.url})` 
-					}}></div>
+					}}><CardText>{
+					res.bedrooms > 0 ? 
+					(res.bedrooms+" bed") : null
+					}{
+					res.bedrooms == 0 || res.bedrooms > 1 ? 
+					("s") : null
+					}{
+					res.bedrooms > 0 && res.bathrooms > 0 ? 
+					(", ") : null
+					}{
+					res.bathrooms > 0 ? 
+					(res.bathrooms+" bath") : null
+					}{
+					res.bathrooms == 0 || res.bathrooms > 1 ? 
+					("s") : null
+					}</CardText></div>
                 <CardBody>
-                  <h3>{res.name}</h3>
+                  <CardTitle>{res.name}</CardTitle>
                   {Helpers.ShowAsParagraphs(res.shortdescription)}
 				  <PropertyAvailability developmentId={development.id} propertyId={res.id} />
                 </CardBody>
@@ -66,7 +66,7 @@ function DevelopmentProperties(props) {
         </Row>
 		{Helpers.ShowAsList(list, "specification", {fontSize: "125%"})}
 		{(Object.keys(list).length > 0) ? (
-			<Link href="#"><a>More property specs</a></Link>
+			<NavLink href="#">More property specs</NavLink>
 			) : null
 		}
       </>

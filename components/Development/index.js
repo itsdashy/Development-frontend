@@ -8,8 +8,6 @@ import DevelopmentOpeningHours from "../../components/DevelopmentOpeningHours";
 import DevelopmentImages from "../../components/DevelopmentImages";
 import DevelopmentProperties from "../../components/DevelopmentProperties";
 
-import Link from "next/link";
-
 import {
   Button,
   Card,
@@ -19,15 +17,17 @@ import {
   CardTitle,
   Col,
   Row,
+  NavLink,
   ListGroup,
   ListGroupItem,
   Media,
 } from "reactstrap";
 
 const QUERY = gql`
-  query($id: ID!) {
-    development(id: $id) {
+  query($seourl: String!) {
+    developments(where: { seourl: $seourl }) {
 		id
+		seourl
 		name
 		description
 		shortdescription
@@ -42,6 +42,8 @@ const QUERY = gql`
 		properties {
 			id
 			name
+			bedrooms
+			bathrooms
 			description
 			shortdescription
 			image {
@@ -102,63 +104,30 @@ function showFullAddress(development){
 function Development(props) {
 	
   const { loading, error, data } = useQuery(QUERY, {
-    variables: { id: props.developmentId },
+    variables: { seourl: props.seoUrl },
   });
 
-  if (error){ return "Error Loading Properties"; }
+  if (error){ return "Error Loading Developments"; }
   if (loading) return <h1>Loading ...</h1>;
-  if (data.development) {
-    const { development } = data;
+  if (data.developments && Object.keys(data.developments).length == 1) {
+	  
+    const development = data.developments[0];
 		
     return (
-      <>
-      <style>
-        {`
-			h1, h2 {
-				margin-top: 30px;
-			}
-			.isDisabled {
-				pointer-events: none;
-			}
-			  a {
-				  text-decoration: underline;
-			  }
-			  .container-fluid {
-				margin-bottom: 30px;
-			  }
-			  .btn-outline-primary {
-				color: #007bff !important;
-			  }
-			  .btn-primary {
-				  color: white !important;
-			  }
-			  .btn-plan {
-				  margin: 0 0 1rem 1rem;
-				  width: 140px;
-				  float: left;
-				  clear: left;
-				  
-			  }
-			  .img-plan {
-				  margin-bottom: 1rem;
-				  background-color: #DDDDDD;
-				  padding: 120px 50px !important;
-			  }
-			`}
-		  </style>
+      <div className="main-content">
         <h1>{development.name}</h1>
         <CardText>{showFullAddress(development)}</CardText>
 		<DevelopmentFromPrices developmentId={development.id} />
-		<CardText className="text-uppercase" style={{margin:"1rem 0 0 0 ", lineHeight:"120%"}}><b>Sales Office &amp; Show Home</b></CardText>
+		<CardText className="heading2"><b>Sales Office &amp; Show Home</b></CardText>
 		<DevelopmentOpeningHours development={development} />
-		<CardText style={{margin:0, lineHeight:"140%"}}><b>{development.telephone}</b></CardText>
-		<a className="btn btn-primary" style={{marginTop:"1rem"}}>Enquire</a>
+		<CardText className="line-no-margin"><b>{development.telephone}</b></CardText>
+		<a className="btn btn-primary btn-enquire">Enquire</a>
 		
 		<h2>Overview</h2>
 		<DevelopmentImages development={development} />
 		{Helpers.ShowAsParagraphs(development.description)}
 		{Helpers.ShowAsList(development.specifications, "specification", {fontSize: "125%"})}
-		<Link href="#"><a>View brochure</a></Link>
+		<NavLink href="#">View brochure</NavLink>
 		
 		<h2>Properties</h2>
 		<Media>
@@ -171,7 +140,7 @@ function Development(props) {
 			</Media>
 		</Media>
 		<DevelopmentProperties development={development} />
-      </>
+      </div>
     );
   }
   return "";

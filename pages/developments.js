@@ -7,7 +7,7 @@ function Developments(props) {
   
 	return (
 	  <>
-		<Development developmentId={router.query.id} />
+		<Development seoUrl={router.query.seourl} />
 	  </>
 	);
   return "";

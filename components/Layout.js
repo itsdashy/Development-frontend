@@ -1,9 +1,14 @@
 /* /components/Layout.js */
-
 import React, { useContext } from "react";
 import Head from "next/head";
-import Link from "next/link";
-import { Container, Nav, NavItem } from "reactstrap";
+
+import {
+	Container,
+	Nav,
+	NavItem,
+	NavLink,
+} from "reactstrap";
+
 import { logout } from "../lib/auth";
 import AppContext from "../context/AppContext";
 
@@ -12,7 +17,7 @@ const Layout = (props) => {
   const { user, setUser } = useContext(AppContext);
 
   return (
-    <div>
+    <>
       <Head>
         <title>{title}</title>
         <meta charSet="utf-8" />
@@ -26,56 +31,33 @@ const Layout = (props) => {
         <script src="https://js.stripe.com/v3" />
       </Head>
       <header>
-        <style jsx>
-          {`
-            a {
-              color: white;
-            }
-            h5 {
-              color: white;
-              padding-top: 11px;
-            }
-          `}
-        </style>
         <Nav className="navbar navbar-dark bg-dark">
           <NavItem>
-            <Link href="/">
-              <a className="navbar-brand">Home</a>
-            </Link>
+            <NavLink href="/" className="nav-link-lg">Home</NavLink>
           </NavItem>
 
           <NavItem className="ml-auto">
             {user ? (
-              <h5>{user.username}</h5>
+              <h5 className="nav-link-text">{user.username}</h5>
             ) : (
-              <Link href="/register">
-                <a className="nav-link"> Sign up</a>
-              </Link>
+              <NavLink href="/register">Sign up</NavLink>
             )}
           </NavItem>
           <NavItem>
             {user ? (
-              <Link href="/">
-                <a
-                  className="nav-link"
+              <NavLink href="/"
                   onClick={() => {
                     logout();
                     setUser(null);
-                  }}
-                >
-                  Logout
-                </a>
-              </Link>
+                  }}>Logout</NavLink>
             ) : (
-              <Link href="/login">
-                <a className="nav-link">Sign in</a>
-              </Link>
+              <NavLink href="/login">Sign in</NavLink>
             )}
           </NavItem>
         </Nav>
       </header>
       <Container>{props.children}</Container>
-    </div>
+    </>
   );
 };
 

@@ -49,22 +49,6 @@ function DevelopmentOpeningHours(props) {
 		
     return (
       <>
-		  <style>
-			{`
-				.carousel {
-					margin-bottom: 1rem;
-				}
-				.carousel-item > img { 
-					width: 100%;
-				}
-				.carousel-control-prev,.carousel-control-next {
-					cursor:pointer;
-				}
-				.text-uppercase {
-					text-transform: uppercase;
-				}
-			`}
-		  </style>
 			<Carousel
 			  activeIndex={activeIndex}
 			  next={next}

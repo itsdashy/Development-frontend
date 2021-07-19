@@ -13,7 +13,7 @@ function Home() {
         <Col>
           <div className="search">
             <InputGroup>
-              <InputGroupAddon addonType="append"> Search </InputGroupAddon>
+              <InputGroupAddon addonType="append">Search</InputGroupAddon>
               <Input
                 onChange={e => updateQuery(e.target.value.toLocaleLowerCase())}
                 value={query}
@@ -23,14 +23,6 @@ function Home() {
           <DevelopmentList search={query} />
         </Col>
       </Row>
-      <style jsx>
-        {`
-          .search {
-            margin: 20px;
-            width: 500px;
-          }
-        `}
-      </style>
     </div>
   );
 }

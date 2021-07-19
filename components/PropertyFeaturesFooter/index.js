@@ -55,7 +55,7 @@ function PropertyFeaturesFooter(props) {
     return (
       <>
 		{Object.keys(features).length > 0 ? (
-			<CardFooter style={{color:"white", backgroundColor: "#D00000", padding: "5px 10px"}}>
+			<CardFooter className="red-panel">
 				<CardText>{features.join(" | ")}</CardText>
 			</CardFooter>
 			) : null

@@ -34,7 +34,7 @@ function DevelopmentFromPrices(props) {
 	let lastBeds = "";
 	Object.keys(plots).map(function(object, i){
 		if(lastBeds != plots[object].property.bedrooms){
-			output.push(<CardText key={i} style={{marginBottom: 0}}><b>{plots[object].property.bedrooms}</b> beds from <b>{Helpers.PriceLarge(plots[object].price)}</b></CardText>);
+			output.push(<CardText key={i} className="line-no-margin"><b>{plots[object].property.bedrooms}</b> beds from <b>{Helpers.PriceLarge(plots[object].price)}</b></CardText>);
 		}
 		lastBeds = plots[object].property.bedrooms;
 	});

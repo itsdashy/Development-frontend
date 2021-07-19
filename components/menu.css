@@ -1,0 +1,11 @@
+.navmenulink {
+	color: white;
+	text-decoration: none;
+}
+.navmenulink:hover {
+	text-decoration: underline;
+}
+.navmenutext {
+	color: white;
+	padding-top: 11px;
+}
