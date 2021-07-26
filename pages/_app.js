@@ -3,10 +3,9 @@ import React from "react";
 import App from "next/app";
 import Head from "next/head";
 import Cookie from "js-cookie";
-import fetch from "isomorphic-fetch";
+//import fetch from "isomorphic-fetch";
 import Layout from "../components/Layout";
 import AppContext from "../context/AppContext";
-import withData from "../lib/apollo";
 import "./App.css";
 
 class MyApp extends App {
@@ -70,4 +69,4 @@ class MyApp extends App {
   }
 }
 
-export default withData(MyApp);
+export default MyApp;

@@ -1,42 +1,22 @@
 /* components/DevelopmentFromPrices/index.js */
-import { useQuery } from "@apollo/react-hooks";
-import { gql } from "apollo-boost";
 import Helpers from "../../components/Helpers.js"
 
-import {
-  CardText,
-} from "reactstrap";
+import { CardText } from "reactstrap";
 
-const QUERY = gql`
-  query($id: ID!) {
-	  plots(where: { development: $id }, sort: "property.bedrooms:asc,price:asc") {
-		number
-		property {
-		  name
-		  bedrooms
-		}
-		price
-	  }
-  }
-`;
-
-function DevelopmentFromPrices(props) {
-  const { loading, error, data } = useQuery(QUERY, {
-    variables: { id: props.developmentId },
-  });
-
-  if (error) return "Error Loading From Prices";
-  if (loading) return <h1>Loading ...</h1>;
-  if (data.plots && data.plots.length) {
-    const { plots } = data;
+export default function DevelopmentFromPrices(props) {
+    const fromprices = props.fromprices;
+    const developmentId = props.developmentId;
+	
+  if (fromprices && Object.keys(fromprices).length > 0) {
 	
 	let output = [];
 	let lastBeds = "";
-	Object.keys(plots).map(function(object, i){
-		if(lastBeds != plots[object].property.bedrooms){
-			output.push(<CardText key={i} className="line-no-margin"><b>{plots[object].property.bedrooms}</b> beds from <b>{Helpers.PriceLarge(plots[object].price)}</b></CardText>);
+	Object.keys(fromprices).map(function(object, i){
+		
+		if(fromprices[object].development.id == developmentId && lastBeds != fromprices[object].property.bedrooms) {
+			output.push(<CardText key={i} className="line-no-margin"><b>{fromprices[object].property.bedrooms}</b> beds from <b>{Helpers.PriceLarge(fromprices[object].price)}</b></CardText>);
 		}
-		lastBeds = plots[object].property.bedrooms;
+		lastBeds = fromprices[object].property.bedrooms;
 	});
 	
 	return (
@@ -46,6 +26,5 @@ function DevelopmentFromPrices(props) {
 	);
 	
   }
-  return "";
+  return null;
 }
-export default DevelopmentFromPrices;

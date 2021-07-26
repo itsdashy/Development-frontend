@@ -1,7 +1,5 @@
 /* components/DevelopmentList/index.js */
 import React from "react";
-import { useQuery } from "@apollo/react-hooks";
-import { gql } from "apollo-boost";
 import Helpers from "../../components/Helpers.js"
 
 import DevelopmentFromPrices from "../../components/DevelopmentFromPrices";
@@ -19,38 +17,16 @@ import {
   Button,
 } from "reactstrap";
 
-const QUERY = gql`
-  {
-	  developments(sort: "name:asc") {
-		id
-		seourl
-		name
-		city
-		shortdescription
-		description
-		images {
-		  url
-		}
-		region{
-		  name
-		}
-		county
-	  }
-  }
-`;
-
-function DevelopmentList(props) {
-  const { loading, error, data } = useQuery(QUERY);
-  if (error) return "Error loading developments";
-  //if developments are returned from the GraphQL query, run the filter query
-  //and set equal to variable developmentsSearch
-  if (loading) return <h1>Fetching</h1>;
-  if (data.developments && data.developments.length) {
-    //searchQuery
-    const searchQuery = data.developments.filter((query) =>
+export default function DevelopmentList(props) {
+  const developments = props.developments;
+  const fromprices = props.fromprices;
+  
+  if (developments && Object.keys(developments).length > 0) {
+	  
+    const searchQuery = developments.filter((query) =>
       query.name.toLowerCase().includes(props.search)
     );
-    if (searchQuery.length != 0) {
+    if (Object.keys(searchQuery).length > 0) {
       return (
 		<>
 			<Row className="card-row card-development">
@@ -69,7 +45,7 @@ function DevelopmentList(props) {
 							<CardTitle>{res.name}</CardTitle>
 							<CardText>{res.city}, {res.county}</CardText>
 							{Helpers.ShowAsParagraphs(res.shortdescription)}
-							<DevelopmentFromPrices developmentId={res.id} />
+							<DevelopmentFromPrices developmentId={res.id} fromprices={fromprices} />
 						</CardBody>
 						<CardFooter>
 							<Button
@@ -83,10 +59,7 @@ function DevelopmentList(props) {
 			</Row>
 		</>
       );
-    } else {
-      return <h1>No developments Found</h1>;
     }
   }
-  return "";
+  return null;
 }
-export default DevelopmentList;

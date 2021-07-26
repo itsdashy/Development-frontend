@@ -10,11 +10,11 @@ const handle = app.getRequestHandler()
 app.prepare()
 	.then(() => {
 		const server = express()
-
+		/*
 		server.get('/developments/:seourl', (req, res) => {
 			app.render(req, res, '/developments', { seourl: req.params.seourl })
 		})
-
+*/
 		server.get('*', (req, res) => {
 			return handle(req, res)
 		})
