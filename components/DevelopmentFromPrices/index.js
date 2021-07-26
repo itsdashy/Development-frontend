@@ -1,4 +1,4 @@
-/* components/DevelopmentFromPrices/index.js */
+/* /components/DevelopmentFromPrices/index.js */
 import Helpers from "../../components/Helpers.js"
 
 import { CardText } from "reactstrap";

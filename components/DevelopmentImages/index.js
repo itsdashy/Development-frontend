@@ -1,4 +1,4 @@
-/* components/DevelopmentImages/index.js */
+/* /components/DevelopmentImages/index.js */
 import React, { useState } from 'react';
 
 import {

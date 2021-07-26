@@ -1,6 +1,25 @@
-/* /pages/developments.js */
+/* /pages/[seourl].js */
+import Helpers from "../../components/Helpers.js"
 
-import Development from "../../components/Development";
+import DevelopmentFromPrices from "../../components/DevelopmentFromPrices";
+import DevelopmentOpeningHours from "../../components/DevelopmentOpeningHours";
+import DevelopmentImages from "../../components/DevelopmentImages";
+import DevelopmentProperties from "../../components/DevelopmentProperties";
+
+import {
+	Button,
+	Card,
+	CardBody,
+	CardImg,
+	CardText,
+	CardTitle,
+	Col,
+	Row,
+	ListGroup,
+	ListGroupItem,
+	Media,
+	NavLink,
+} from "reactstrap";
 					
 function showFullAddress(development){
 	let output = "";
@@ -38,51 +57,7 @@ export async function getStaticPaths() {
     body: JSON.stringify({
       query: `{
 		developments(sort: "name:asc") {
-			id
 			seourl
-			name
-			description
-			shortdescription
-			addressline1
-			addressline2
-			city
-			county
-			postcode
-			images {
-				url
-			}
-			properties {
-				id
-				name
-				bedrooms
-				bathrooms
-				description
-				shortdescription
-				image {
-				  url
-				}
-				specifications {
-				  specification
-				}
-			}
-			specifications {
-				specification
-			}
-			telephone
-			mondayopening
-			mondayclosing
-			tuesdayopening
-			tuesdayclosing
-			wednesdayopening
-			wednesdayclosing
-			thursdayopening
-			thursdayclosing
-			fridayopening
-			fridayclosing
-			saturdayopening
-			saturdayclosing
-			sundayopening
-			sundayclosing
 		}
 	  }`
     })
@@ -176,6 +151,18 @@ export async function getStaticProps({ params }) {
 			}
 			price
 		}
+		propertiesbyprice: plots(where: { 
+			development: {
+				seourl: "${params.seourl}"
+			}}, sort: "price:asc") {
+			price
+			homeoftheweek
+			partexchange
+			property {
+				id
+				name
+			}
+		}
 	  }`
     })
   })
@@ -200,26 +187,66 @@ export async function getStaticProps({ params }) {
 		(item) => item
 	  );
   }
+  
+  let propertiesbyprice = null;
+  if(developmentRes.data.propertiesbyprice !== null) {
+	  propertiesbyprice = developmentRes.data.propertiesbyprice.map(
+		(item) => item
+	  );
+  }
 
   return {
     props: {
       development,
-	  fromprices
+	  fromprices,
+	  propertiesbyprice
     },
-    revalidate: 1
+    revalidate: 600
   }
   
 }
 
-export default function Home({development, fromprices}) {
-	/*
-	console.log("seourl development");
-	console.log(development);
-	console.log("seourl development");
-	*/
-	return (
+export default function Home({development, fromprices, propertiesbyprice}) {
+	
+  if(development) {
+		
+    return (
 	  <>
-		<Development development={development} fromprices={fromprices} />
+		  <div className="main-content">
+			<div>
+				<h1>{development.name}</h1>
+				<CardText>{showFullAddress(development)}</CardText>
+					{ fromprices !== null ?
+				<DevelopmentFromPrices developmentId={development.id} fromprices={fromprices} /> : null
+					}
+				<CardText className="heading2"><b>Sales Office &amp; Show Home</b></CardText>
+				<DevelopmentOpeningHours development={development} />
+				<CardText className="line-no-margin"><b>{development.telephone}</b></CardText>
+				<NavLink href="#" className="btn btn-primary btn-enquire">Enquire</NavLink>
+			</div>
+			<div>
+				<h2>Overview</h2>
+				<DevelopmentImages development={development} />
+				{Helpers.ShowAsParagraphs(development.description)}
+				{Helpers.ShowAsList(development.specifications, "specification", {fontSize: "125%"})}
+				<NavLink href="#">View brochure</NavLink>
+			</div>
+			<div>
+				<h2>Properties</h2>
+				<Media>
+					<Media left href="#">
+						<Media object alt="Plan image" className="img-plan" />
+					</Media>
+					<Media right body>
+						<a className="btn btn-primary btn-plan">Expand plan</a>
+						<a className="btn btn-primary btn-plan">Download plan</a>
+					</Media>
+				</Media>
+				<DevelopmentProperties development={development} propertiesbyprice={propertiesbyprice} />
+			</div>
+		  </div>
 	  </>
-	);
+    );
+  }
+  return null;
 }

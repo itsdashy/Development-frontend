@@ -11,10 +11,15 @@ h1, h2 {
 }
 .main-content .nav-link {
 	color: #007bff;
-	text-decoration: underline;
+	text-decoration: none;
 }
 .main-content .nav-link:hover {
 	color: #007bff;
+	text-decoration: underline;
+}
+.main-content .btn.nav-link:hover {
+	color: #007bff;
+    background-color: #0069d9;
 	text-decoration: none;
 }
 .nav-link-lg {
@@ -53,6 +58,7 @@ h5.nav-link-text {
 }
 .card-row .card {
 	margin: 0 0.5rem 20px 0.5rem;
+    height: calc(100% - 20px);
 }
 .card-development .card-title {
 	margin: 0 0 20px 0;

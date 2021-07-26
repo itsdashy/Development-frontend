@@ -1,6 +1,4 @@
-/* components/PropertyFeaturesFooter/index.js */
-import { useQuery } from "@apollo/react-hooks";
-import { gql } from "apollo-boost";
+/* /components/PropertyFeaturesFooter/index.js */
 import Helpers from "../../components/Helpers.js"
 
 import {
@@ -8,61 +6,32 @@ import {
   CardFooter,
 } from "reactstrap";
 
-const QUERY = gql`
-  query($developmentId: ID!, $propertyId: ID!) {
-	plots(where: {
-		development: $developmentId,
-		property: $propertyId
-		}, sort: "price:asc"){
-		homeoftheweek
-		partexchange
-	}
-  }
-`;
-
-function PropertyFeaturesFooter(props) {
-  const { loading, error, data } = useQuery(QUERY, {
-    variables: {
-		developmentId: props.developmentId,
-		propertyId: props.propertyId,
-	},
-  });
-
-  if (error) return "Error Loading Availability";
-  if (loading) return <h1>Loading ...</h1>;
-  if (data.plots && data.plots.length) {
-    const { plots } = data;
+export default function PropertyFeaturesFooter(props) {
+	const propertyId = props.propertyId;
+	const propertiesbyprice = props.propertiesbyprice;
 	
-	let output = [];
+  if (propertiesbyprice && Object.keys(propertiesbyprice).length > 0) {
+	  
 	let features = [];
-	let homeoftheweek = false;
-	let partexchange = false;
-	Object.keys(plots).map(function(object, i){
-		if(plots[object].homeoftheweek) {
-			homeoftheweek = true;
-		}
-		if(plots[object].partexchange) {
-			partexchange = true;
+	Object.keys(propertiesbyprice).map(function(object, i){
+		if(propertyId == propertiesbyprice[object].property.id){
+			if(propertiesbyprice[object].homeoftheweek) {
+				features.push("Home of the week");
+			}
+			if(propertiesbyprice[object].partexchange) {
+				features.push("Part exchange available");
+			}
 		}
 	});
-	if(homeoftheweek){
-		features.push("Home of the week");
-	}
-	if(partexchange){
-		features.push("Part exchange available");
-	}
-	
-    return (
-      <>
-		{Object.keys(features).length > 0 ? (
+	  if(Object.keys(features).length > 0){
+		return (
+		  <>
 			<CardFooter className="red-panel">
 				<CardText>{features.join(" | ")}</CardText>
 			</CardFooter>
-			) : null
-		}
-      </>
-    );
+		  </>
+		);
+	  }
   }
-  return "";
+  return null;
 }
-export default PropertyFeaturesFooter;

@@ -1,44 +1,32 @@
-/* components/PropertyAvailability/index.js */
-import { useQuery } from "@apollo/react-hooks";
-import { gql } from "apollo-boost";
+/* /components/PropertyAvailability/index.js */
 import Helpers from "../../components/Helpers.js"
 
 import {
   CardText,
 } from "reactstrap";
 
-const QUERY = gql`
-  query($developmentId: ID!, $propertyId: ID!) {
-	plots(where: {
-		development: $developmentId,
-		property: $propertyId
-		}, sort: "price:asc"){
-		price
-	}
-  }
-`;
-
-function PropertyAvailability(props) {
-  const { loading, error, data } = useQuery(QUERY, {
-    variables: {
-		developmentId: props.developmentId,
-		propertyId: props.propertyId,
-	},
-  });
-
-  if (error) return "Error Loading Availability";
-  if (loading) return <h1>Loading ...</h1>;
-  if (data.plots && data.plots.length) {
-    const { plots } = data;
+export default function PropertyAvailability(props) {
+	const propertyId = props.propertyId;
+	const propertiesbyprice = props.propertiesbyprice;
 	
-    return (
-      <>
-		{Object.keys(plots).map(function(object, i){
-			return i == 0 ? (<CardText key={i}><b>{Object.keys(plots).length}</b> available from <b>{Helpers.PriceLarge(plots[object].price)}</b></CardText>) : null;
-		})}
-      </>
-    );
+  if (propertiesbyprice && Object.keys(propertiesbyprice).length > 0) {
+	  let count = 0, minprice = 0, isfirst = false;
+	  Object.keys(propertiesbyprice).map(function(object, i){
+		  if(propertyId == propertiesbyprice[object].property.id){
+			  if(!isfirst){
+				  minprice = propertiesbyprice[object].price;
+				  isfirst = true;
+			  }
+			  count++;
+		  }
+	  });
+	  if(count > 0 && minprice > 0){
+		return (
+		  <>
+			<CardText><b>{count}</b> available from <b>{Helpers.PriceLarge(minprice)}</b></CardText>
+		  </>
+		);
+	  }
   }
-  return "";
+  return null;
 }
-export default PropertyAvailability;

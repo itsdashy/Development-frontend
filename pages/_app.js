@@ -1,9 +1,8 @@
-/* _app.js */
+/* /pages/_app.js */
 import React from "react";
 import App from "next/app";
 import Head from "next/head";
 import Cookie from "js-cookie";
-//import fetch from "isomorphic-fetch";
 import Layout from "../components/Layout";
 import AppContext from "../context/AppContext";
 import "./App.css";

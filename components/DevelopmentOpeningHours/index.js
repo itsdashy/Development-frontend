@@ -1,4 +1,4 @@
-/* components/DevelopmentOpeningHours/index.js */
+/* /components/DevelopmentOpeningHours/index.js */
 
 import {
   CardText,

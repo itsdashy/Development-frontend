@@ -1,4 +1,4 @@
-/* components/DevelopmentProperties/index.js */
+/* /components/DevelopmentProperties/index.js */
 import Helpers from "../../components/Helpers.js"
 
 import PropertyAvailability from "../../components/PropertyAvailability";
@@ -17,6 +17,7 @@ import {
 
 function DevelopmentProperties(props) {
 	const development = props.development;
+	const propertiesbyprice = props.propertiesbyprice;
 	
 	let list = [];
 	if(Object.keys(development.properties).length > 0) {
@@ -57,9 +58,9 @@ function DevelopmentProperties(props) {
                 <CardBody>
                   <CardTitle>{res.name}</CardTitle>
                   {Helpers.ShowAsParagraphs(res.shortdescription)}
-				  <PropertyAvailability developmentId={development.id} propertyId={res.id} />
+				  <PropertyAvailability propertyId={res.id} propertiesbyprice={propertiesbyprice} />
                 </CardBody>
-				<PropertyFeaturesFooter developmentId={development.id} propertyId={res.id} />
+				<PropertyFeaturesFooter propertyId={res.id} propertiesbyprice={propertiesbyprice} />
               </Card>
             </Col>
           ))}
