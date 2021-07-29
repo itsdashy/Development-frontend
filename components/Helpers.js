@@ -12,14 +12,14 @@ const Helpers = {
 			if(str.indexOf("\n\n") !== -1) {
 				strsplit = str.split("\n\n");
 				for (let i = 0; i < strsplit.length; i++) {
-					strrows.push(<CardText key={i} dangerouslySetInnerHTML={{__html:strsplit[i]}} className={classname} style={style} />);
+					strrows.push(<div key={i} dangerouslySetInnerHTML={{__html:strsplit[i]}} className={classname} style={style} />);
 				}
 				if(strrows.length > 0) {
 					str = strrows;
 					return strrows;
 				}
 			}
-			return (<CardText dangerouslySetInnerHTML={{__html:str}} className={classname} style={style} />);
+			return (<div dangerouslySetInnerHTML={{__html:str}} className={classname} style={style} />);
 		}
 		catch(err) {}
 		return (<></>);

@@ -15,6 +15,17 @@ import {
   NavLink,
 } from "reactstrap";
 
+function TextBedsBaths(beds = 0, baths = 0){
+	let output = "";
+	if(beds > 0) output += beds+" bed";
+	if(beds == 0 || beds > 1) output += "s";
+	if(beds > 0 && baths > 0) output += ", ";
+	if(baths > 0) output += baths+" bath";
+	if(baths == 0 || baths > 1) output += "s";
+	if(output != "") return (<CardText>{output}</CardText>);
+	return "";
+}
+
 function DevelopmentProperties(props) {
 	const development = props.development;
 	const propertiesbyprice = props.propertiesbyprice;
@@ -36,25 +47,14 @@ function DevelopmentProperties(props) {
           {development.properties.map((res) => (
             <Col xs="12" sm="12" md="6" lg="4" key={res.id} className="column">
               <Card>
-                <div className="card-image" style={{
+			  {
+				  res.image ? (<div className="card-image" style={{
 						height: 265,
-						backgroundImage: `url(${process.env.NEXT_PUBLIC_API_URL}${res.image.url})` 
-					}}><CardText>{
-					res.bedrooms > 0 ? 
-					(res.bedrooms+" bed") : null
-					}{
-					res.bedrooms == 0 || res.bedrooms > 1 ? 
-					("s") : null
-					}{
-					res.bedrooms > 0 && res.bathrooms > 0 ? 
-					(", ") : null
-					}{
-					res.bathrooms > 0 ? 
-					(res.bathrooms+" bath") : null
-					}{
-					res.bathrooms == 0 || res.bathrooms > 1 ? 
-					("s") : null
-					}</CardText></div>
+						backgroundImage: `url(${res.image.url})` 
+				}}>{TextBedsBaths(res.bedrooms,res.bathrooms)}</div>)
+					:
+					(<div className="card-image" style={{ height: 265 }}>{TextBedsBaths(res.bedrooms,res.bathrooms)}</div>)
+			  }
                 <CardBody>
                   <CardTitle>{res.name}</CardTitle>
                   {Helpers.ShowAsParagraphs(res.shortdescription)}

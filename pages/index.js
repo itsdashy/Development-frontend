@@ -30,7 +30,10 @@ export async function getStaticProps() {
 	},
     body: JSON.stringify({
       query: `{
-		  developments: developments(sort: "name:asc") {
+		  developments: developments(
+			where: { active: true }
+			sort: "name:asc"
+		  ) {
 			id
 			seourl
 			name
@@ -123,14 +126,18 @@ export default function Home({ developments, fromprices }) {
 			  {searchQuery.map((res) => (
 				<Col xs="12" sm="12" md="6" lg="4" key={res.id} className="column">
 					<Card>
-						{Object.keys(res.images).map(function(object, i){
-						   return i == 0 ? (<NavLink key={i}
-						to={`/developments/${res.seourl}`}
+						{
+							Object.keys(res.images).length > 0 ?
+							Object.keys(res.images).map(function(object, i){
+						   return i == 0 && res.images[object].url ? (<NavLink key={i}
+						href={`/developments/${res.seourl}`}
 						className="card-image"
 						style={{
-							backgroundImage: `url(${process.env.NEXT_PUBLIC_API_URL}${res.images[object].url})`}}
-						></NavLink>) : null; 
-						})}
+							backgroundImage: `url(${res.images[object].url})`}}
+						></NavLink>) : null
+						})
+							: null
+						}
 						<CardBody>
 							<CardTitle>{res.name}</CardTitle>
 							<CardText>{res.city}, {res.county}</CardText>
