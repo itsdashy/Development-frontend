@@ -8,17 +8,17 @@ import {
 
 export default function PropertyFeaturesFooter(props) {
 	const propertyId = props.propertyId;
-	const propertiesbyprice = props.propertiesbyprice;
+	const plotsbyprice = props.plotsbyprice;
 	
-  if (propertiesbyprice && Object.keys(propertiesbyprice).length > 0) {
+  if (plotsbyprice && Object.keys(plotsbyprice).length > 0) {
 	  
 	let features = [];
-	Object.keys(propertiesbyprice).map(function(object, i){
-		if(propertyId == propertiesbyprice[object].property.id){
-			if(propertiesbyprice[object].homeoftheweek) {
+	Object.keys(plotsbyprice).map(function(object, i){
+		if(propertyId == plotsbyprice[object].property.id){
+			if(plotsbyprice[object].homeoftheweek) {
 				features.push("Home of the week");
 			}
-			if(propertiesbyprice[object].partexchange) {
+			if(plotsbyprice[object].partexchange) {
 				features.push("Part exchange available");
 			}
 		}

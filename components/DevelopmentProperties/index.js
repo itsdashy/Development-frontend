@@ -26,51 +26,72 @@ function TextBedsBaths(beds = 0, baths = 0){
 	return "";
 }
 
+function BuildProperties(plotsbyprice){
+	let output = [];
+	let lastPlot = "";
+	Object.keys(plotsbyprice).map(function(obj, i){
+		if(lastPlot != plotsbyprice[obj].property.name) {
+			output.push(
+				<Col xs="12" sm="12" md="6" lg="4" key={i} className="column">
+				  <Card>
+				  {
+					  plotsbyprice[obj].property.image ? (<div className="card-image" style={{
+							height: 265,
+							backgroundImage: `url(${plotsbyprice[obj].property.image.url})` 
+					}}>{TextBedsBaths(plotsbyprice[obj].property.bedrooms,plotsbyprice[obj].property.bathrooms)}</div>)
+						:
+						(<div className="card-image" style={{ height: 265 }}>{TextBedsBaths(plotsbyprice[obj].property.bedrooms,plotsbyprice[obj].property.bathrooms)}</div>)
+				  }
+					<CardBody>
+					  <CardTitle>{plotsbyprice[obj].property.name}</CardTitle>
+					  {Helpers.ShowAsParagraphs(plotsbyprice[obj].property.shortdescription)}
+					  <PropertyAvailability propertyId={plotsbyprice[obj].property.id} plotsbyprice={plotsbyprice.slice().reverse()} />
+					</CardBody>
+					<PropertyFeaturesFooter propertyId={plotsbyprice[obj].property.id} plotsbyprice={plotsbyprice.slice().reverse()} />
+				  </Card>
+				</Col>
+			);
+		}
+		lastPlot = plotsbyprice[obj].property.name;
+	});
+	return output;
+}
+
 function DevelopmentProperties(props) {
-	const development = props.development;
-	const propertiesbyprice = props.propertiesbyprice;
+	let plotsbyprice = props.plotsbyprice;
 	
+	if(Object.keys(plotsbyprice).length > 0) {
+		plotsbyprice = plotsbyprice.slice().reverse();
+	}
+
 	let list = [];
-	if(Object.keys(development.properties).length > 0) {
-		Object.keys(development.properties).map(function(propertykey, i){
-			if(Object.keys(development.properties[propertykey].specifications).length) {
-				Object.keys(development.properties[propertykey].specifications).map(function(speckey, ii){
-					list.push(development.properties[propertykey].specifications[speckey]);
+	if(Object.keys(plotsbyprice).length > 0) {
+		Object.keys(plotsbyprice).map(function(obj, i){
+			if(Object.keys(plotsbyprice[obj].property.specifications).length) {
+				Object.keys(plotsbyprice[obj].property.specifications).map(function(speckey, ii){
+					if(plotsbyprice[obj].property.specifications[speckey].specification && list.indexOf(plotsbyprice[obj].property.specifications[speckey].specification) === -1){
+						list.push(plotsbyprice[obj].property.specifications[speckey].specification);
+					}
 				});
 			}
 		});
 	}
-		
-    return (
-      <>
-        <Row className="card-row">
-          {development.properties.map((res) => (
-            <Col xs="12" sm="12" md="6" lg="4" key={res.id} className="column">
-              <Card>
-			  {
-				  res.image ? (<div className="card-image" style={{
-						height: 265,
-						backgroundImage: `url(${res.image.url})` 
-				}}>{TextBedsBaths(res.bedrooms,res.bathrooms)}</div>)
-					:
-					(<div className="card-image" style={{ height: 265 }}>{TextBedsBaths(res.bedrooms,res.bathrooms)}</div>)
-			  }
-                <CardBody>
-                  <CardTitle>{res.name}</CardTitle>
-                  {Helpers.ShowAsParagraphs(res.shortdescription)}
-				  <PropertyAvailability propertyId={res.id} propertiesbyprice={propertiesbyprice} />
-                </CardBody>
-				<PropertyFeaturesFooter propertyId={res.id} propertiesbyprice={propertiesbyprice} />
-              </Card>
-            </Col>
-          ))}
-        </Row>
-		{Helpers.ShowAsList(list, "specification", {fontSize: "125%"})}
-		{(Object.keys(list).length > 0) ? (
+	
+	let lastProperty = "";
+	if (plotsbyprice && Object.keys(plotsbyprice).length > 0) {
+		return (
+		  <>
+			<Row className="card-row">
+			{BuildProperties(plotsbyprice)}
+			</Row>
+			{Helpers.ShowAsList(list, "", {fontSize: "125%"})}
+			{(Object.keys(list).length > 0) ? (
 			<NavLink href="#">More property specs</NavLink>
-			) : null
-		}
-      </>
-    );
+			) : null }
+		  </>
+		);
+	}
+	return null;
+		
 }
 export default DevelopmentProperties;

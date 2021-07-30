@@ -7,14 +7,14 @@ import {
 
 export default function PropertyAvailability(props) {
 	const propertyId = props.propertyId;
-	const propertiesbyprice = props.propertiesbyprice;
+	let plotsbyprice = props.plotsbyprice;
 	
-  if (propertiesbyprice && Object.keys(propertiesbyprice).length > 0) {
+  if (plotsbyprice && Object.keys(plotsbyprice).length > 0) {
 	  let count = 0, minprice = 0, isfirst = false;
-	  Object.keys(propertiesbyprice).map(function(object, i){
-		  if(propertyId == propertiesbyprice[object].property.id){
+	  Object.keys(plotsbyprice).map(function(object, i){
+		  if(propertyId == plotsbyprice[object].property.id){
 			  if(!isfirst){
-				  minprice = propertiesbyprice[object].price;
+				  minprice = plotsbyprice[object].price;
 				  isfirst = true;
 			  }
 			  count++;

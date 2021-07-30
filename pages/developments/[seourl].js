@@ -90,7 +90,7 @@ export async function getStaticProps({ params }) {
 	},
     body: JSON.stringify({
       query: `{
-		developmentinfo: developments(where: { seourl: "${params.seourl}" }) {
+		development: developments(where: { seourl: "${params.seourl}" }) {
 			id
 			seourl
 			name
@@ -103,20 +103,6 @@ export async function getStaticProps({ params }) {
 			postcode
 			images {
 				url
-			}
-			properties {
-				id
-				name
-				bedrooms
-				bathrooms
-				description
-				shortdescription
-				image {
-				  url
-				}
-				specifications {
-				  specification
-				}
 			}
 			specifications {
 				specification
@@ -151,7 +137,7 @@ export async function getStaticProps({ params }) {
 			}
 			price
 		}
-		propertiesbyprice: plots(where: { 
+		plotsbyprice: plots(where: { 
 			development: {
 				seourl: "${params.seourl}"
 			}}, sort: "price:asc") {
@@ -161,6 +147,16 @@ export async function getStaticProps({ params }) {
 			property {
 				id
 				name
+				bedrooms
+				bathrooms
+				description
+				shortdescription
+				image {
+				  url
+				}
+				specifications {
+				  specification
+				}
 			}
 		}
 	  }`
@@ -173,7 +169,7 @@ export async function getStaticProps({ params }) {
     throw new Error('Failed to fetch API')
   }
   
-  let development = developmentRes.data.developmentinfo.map(
+  let development = developmentRes.data.development.map(
     (item) => item
   );
   
@@ -188,9 +184,9 @@ export async function getStaticProps({ params }) {
 	  );
   }
   
-  let propertiesbyprice = null;
-  if(developmentRes.data.propertiesbyprice !== null) {
-	  propertiesbyprice = developmentRes.data.propertiesbyprice.map(
+  let plotsbyprice = null;
+  if(developmentRes.data.plotsbyprice !== null) {
+	  plotsbyprice = developmentRes.data.plotsbyprice.map(
 		(item) => item
 	  );
   }
@@ -199,14 +195,14 @@ export async function getStaticProps({ params }) {
     props: {
       development,
 	  fromprices,
-	  propertiesbyprice
+	  plotsbyprice
     },
     revalidate: 600
   }
   
 }
 
-export default function Home({development, fromprices, propertiesbyprice}) {
+export default function Home({development, fromprices, plotsbyprice}) {
 	
   if(development) {
 		
@@ -242,7 +238,7 @@ export default function Home({development, fromprices, propertiesbyprice}) {
 						<a className="btn btn-primary btn-plan">Download plan</a>
 					</Media>
 				</Media>
-				<DevelopmentProperties development={development} propertiesbyprice={propertiesbyprice} />
+				<DevelopmentProperties plotsbyprice={plotsbyprice} />
 			</div>
 		  </div>
 	  </>
